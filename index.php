@@ -195,19 +195,16 @@
         
         var $this = $(this);
         var input = $this.val();
-                // input = input.replace(/[\W\s\._\-]+/g, '');
-
         input = input.replace(/[\D\s\._\-]+/g, "");
         var split = 11;
         var chunk = [];
-
         for (var i = 0, len = input.length; i < len; i += split) {
-            chunk.push( input.substr( i, split ) );
+            chunk.push( input);
         }
 
         $this.val(function() 
         {
-            return chunk.join(" ").toUpperCase();
+          return chunk.join(" ").toUpperCase();
         });
       } );
 
