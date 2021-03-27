@@ -52,7 +52,7 @@
             <div class="row mb-2">
               <label for="dob" class="col-3 form-label">DOB:</label>
               <div class="col-8">
-                <input class="form-control" type="date" name="dob" id="dob">
+                <input class="form-control" type="date"  data-date="" data-date-format="DD MMMM YYYY" name="dob" id="dob">
               </div>
             </div>
             <!-- End DoB-->
@@ -60,7 +60,7 @@
             <div class="row mb-2">
               <label for="mobNo" class="col-3 form-label">Mobile No:</label>
               <div class="col-8">
-                <input  class="form-control" type="number" name="mobNo" id="mobNo">
+                <input  class="form-control" type="text" maxlength="11" minlength="11" name="mobNo" id="mobNo">
               </div>
             </div>
             <!-- End MobileNumber -->
@@ -167,5 +167,50 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js" integrity="sha384-SR1sx49pcuLnqZUnnPwx6FCym0wLsk5JZuNx2bPPENzswTNFaQU1RDvt3wT4gWFG" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.min.js" integrity="sha384-j0CNLUeiqtyaRmlzUHCPZ+Gy5fQu0dQ6eZ/xAww941Ai1SxSY+0EQqNXNE6DZiVc" crossorigin="anonymous"></script>
     -->
+ <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>
+    <!-- <script type="text/javascript" src="https://github.com/Eonasdan/bootstrap-datetimepicker/blob/master/src/js/bootstrap-datetimepicker.js"></script>
+   -->
+
+    <script type="text/javascript">
+      $( document ).ready(function() {
+
+        $('#fcnic').prop("disabled",true);
+
+       });
+    
+      $( "#mobNo" ).on( "keyup", function( event ) 
+      {
+
+        // When user select text in the document, also abort.
+        // var selection = window.getSelection().toString();
+        // if ( selection !== '' ) {
+        //     return;
+        // }
+        
+        // When the arrow keys are pressed, abort.
+        // if ( $.inArray( event.keyCode, [38,40,37,39] ) !== -1 ) {
+        //     return;
+        // }
+        
+        var $this = $(this);
+        var input = $this.val();
+                // input = input.replace(/[\W\s\._\-]+/g, '');
+
+        input = input.replace(/[\D\s\._\-]+/g, "");
+        var split = 11;
+        var chunk = [];
+
+        for (var i = 0, len = input.length; i < len; i += split) {
+            chunk.push( input.substr( i, split ) );
+        }
+
+        $this.val(function() 
+        {
+            return chunk.join(" ").toUpperCase();
+        });
+      } );
+
+      </script>
   </body>
 </html>
