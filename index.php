@@ -19,7 +19,7 @@
     
     <!-- Container -->
     <section class="container mt-5">
-      <form>
+      <form action="save.php" method="post">
         <section class="row">
           <!-- LEFT Side -->
           <div class="col-6">
