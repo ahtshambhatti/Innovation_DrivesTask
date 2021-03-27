@@ -181,18 +181,6 @@
     
       $( "#mobNo" ).on( "keyup", function( event ) 
       {
-
-        // When user select text in the document, also abort.
-        // var selection = window.getSelection().toString();
-        // if ( selection !== '' ) {
-        //     return;
-        // }
-        
-        // When the arrow keys are pressed, abort.
-        // if ( $.inArray( event.keyCode, [38,40,37,39] ) !== -1 ) {
-        //     return;
-        // }
-        
         var $this = $(this);
         var input = $this.val();
         input = input.replace(/[\D\s\._\-]+/g, "");
