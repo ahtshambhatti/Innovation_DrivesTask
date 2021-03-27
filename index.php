@@ -178,7 +178,23 @@
         $('#fcnic').prop("disabled",true);
 
        });
-    
+      // $( "#dob" ).on( "focusout", function( event ) 
+      // {
+
+      // }
+      $( "#dob" ).on( "focusout", function( event ) 
+      {
+        var $this = $(this);
+        var input = $this.val();
+        dob = new Date(input);
+        var today = new Date();
+        var age = Math.floor((today-dob) / (365.25 * 24 * 60 * 60 * 1000));
+        if (age < 18) {
+          $('#fcnic').prop("disabled",false);
+        }
+      });
+  
+
       $( "#mobNo" ).on( "keyup", function( event ) 
       {
         var $this = $(this);
