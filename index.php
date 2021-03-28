@@ -1,3 +1,8 @@
+<?php
+  require_once 'functions.php';
+  $degree =load_degrees();
+?>
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -19,7 +24,7 @@
     
     <!-- Container -->
     <section class="container mt-5">
-      <form action="save.php" method="post">
+      <form>
         <section class="row">
           <!-- LEFT Side -->
           <div class="col-6">
@@ -28,13 +33,13 @@
               <label for="degree" class="col-3 form-label">Degree:</label>
               <div class="col-8">
                 <select class="degree form-control" id="degree" name="degree">
-                  <option>Select Degree</option>
-                  <!-- <?php 
+                  <option value="0">Select Degree</option>
+                  <?php 
                     foreach ($degree as $val) 
                     {
-                      echo "<option value='$val->id'>".$val->name."</option>";
+                      echo "<option value='".$val['id']."'>".$val['name']."</option>";
                     }
-                   ?> -->
+                   ?>
                 </select>
               </div>
             </div>
@@ -73,13 +78,8 @@
               <label for="class" class="col-3 form-label">Class:</label>
               <div class="col-8"> 
                 <select class="class form-control" id="class" name="class">
-                  <option>Select Class</option>
-                  <!-- <?php 
-                    foreach ($classes as $val) 
-                    {
-                      echo "<option value='$val->id'>".$val->name."</option>";
-                    }
-                  ?> -->
+                  <option value="0">Select Class</option>
+                  
                 </select>
               </div>
             </div>
@@ -132,15 +132,17 @@
                   <input class="form-check-input" type="radio" name="status" id="inactive" value="0">
                     In-Active
                 </div>
+                <span id="status"></span>
               </div>
               <!--End Status  -->
               <!--Scholorship  -->
               <div class="col-4" style="margin-left:2% !important; ">
                 <label class=" col-5 form-label"> Scholorship:      </label>
-                <div class="form-check form-check-inline">
+                <div class="form-check form-check-inline" >
                   <input class="form-check-input" type="checkbox" id="scholorship" name="scholorship">
                     Required
                 </div>
+                <span id="schErr"></span>
               </div>
               <!--END Scholorship  -->
             </div>
@@ -149,7 +151,7 @@
   
       <div class="offset-10 col-2 mt-3">
         <div class="container" style="margin-left:-15% !important; ">
-        <button type="submit" class="btn btn-primary form-control">
+        <button type="button" id="submit_btn" class="btn btn-primary form-control">
           Save
         </button>
       </div>
@@ -174,26 +176,135 @@
 
     <script type="text/javascript">
       $( document ).ready(function() {
-
         $('#fcnic').prop("disabled",true);
-
-       });
-      // $( "#dob" ).on( "focusout", function( event ) 
-      // {
-
-      // }
-      $( "#dob" ).on( "focusout", function( event ) 
+        $('#classes').prop("disabled",true);
+        let age=0;
+        $( "#dob" ).on( "focusout", function( event ) 
+        {
+          var $this = $(this);
+          var input = $this.val();
+          dob = new Date(input);
+          var today = new Date();
+          age = Math.floor((today-dob) / (365.25 * 24 * 60 * 60 * 1000));
+          if (age < 18) {
+            $('#fcnic').prop("disabled",false);
+          }
+        });
+      $('#submit_btn').on('click',function(e) 
       {
-        var $this = $(this);
-        var input = $this.val();
-        dob = new Date(input);
-        var today = new Date();
-        var age = Math.floor((today-dob) / (365.25 * 24 * 60 * 60 * 1000));
-        if (age < 18) {
-          $('#fcnic').prop("disabled",false);
+        // e.preventDefault();
+        $(".error").remove();
+        var deg_id = $('#degree').val();
+        var name = $('#name').val();
+        var mobNo = $('#mobNo').val();
+        var dob = $('#dob').val();
+        var class_id = $('#class').val();
+        var fname = $('#fname').val();
+        var cnic = $('#cnic').val();
+        var fcnic = $('#fcnic').val();
+        var address = $('#address').val();
+        // var status = $('#status').val();
+        var scholorship = $('#scholorship').val();
+        var status = $("input[name='status']:checked").val();
+        let error=0;
+        if(deg_id==0)
+        {
+          $('#degree').after('<span class="error" style="color:red;">Degree Must provide</span>'); 
+          error =1; 
+        }     
+        if (name.length < 1) 
+        {
+          $('#name').after('<span class="error" style="color:red;">Name Must be Provided</span>');
+          error = 1;
+        }      
+        if (dob.length < 1) 
+        {
+          $('#dob').after('<span class="error" style="color:red;">DOB Must be Provided</span>');
+         error = 1;
+        }   
+        if (mobNo.length < 1) 
+        {
+        $('#mobNo').after('<span class="error" style="color:red;">Number  Must be Provided</span>');
+        error = 1;
+        }
+        else if (mobNo.length > 1 && mobNo.length < 11) 
+        {
+        $('#mobNO').after('<span class="error" style="col-smor:red;">Number must be at least 11 characters long</span>');
+        error = 1;
+        }      
+        if(class_id==0)
+        {
+        $('#class').after('<span class="error" style="color:red;">Class Must provide</span>'); 
+        error =1;
+        }      
+        if (fname.length < 1) 
+        {
+        $('#fname').after('<span class="error" style="color:red;">Name Must be Provided</span>');
+        error = 1;
+        }
+            
+        if (cnic.length < 1) 
+        {
+          if(age<18) 
+          {
+            if(fcnic.length < 1)
+              if (cnic.length<1) 
+              {
+                $('#fcnic').after('<span class="error" style="color:red;">CNIC Must be Provided</span>');
+                error = 1;  
+              }
+          }
+          else if (age>18){
+          $('#cnic').after('<span class="error" style="color:red;">CNIC Must be Provided</span>');
+          error = 1;
+        }
+        }     
+        if (address.length < 1) 
+        {
+        $('#address').after('<span class="error" style="color:red;">Address Must be Provided</span>');
+        error = 1;
+        }     
+        if (typeof status ==='undefined') 
+        {
+        $('#status').html('<div><span class="error" style="color:red;">Status Must be Provided</span>');
+        error = 1;
+        }
+        if(! ($('#scholorship').is(":checked")))
+        {
+        $('#schErr').html('<span class="error" style="color:red;">Must Accepted</span>');
+        error=1;
+        } 
+        if(error == 0)
+        {
+          e.preventDefault();
+          var formData = {
+            'funName':'Save',
+            'deg_id'        : deg_id,
+            'name'       : name,
+            'mobNo'       : mobNo,
+            'dob'       : dob,
+            'class_id'  : class_id,
+            'fname':fname,
+            'cnic':cnic,
+            'fcnic':fcnic,
+            'address':address,
+            'status':status,
+            'scholorship':scholorship,
+          };
+          $.ajax(
+          {
+            type: "POST",
+            url: 'functions.php',
+            data: formData, 
+            success: function(data)
+            {
+              window.location.href = "index.php";
+            }
+          });
         }
       });
-  
+  });
+
 
       $( "#mobNo" ).on( "keyup", function( event ) 
       {
@@ -208,9 +319,23 @@
 
         $this.val(function() 
         {
-          return chunk.join(" ").toUpperCase();
+          return chunk.join("").toUpperCase();
         });
       } );
+      $('#degree').on('change',function(e) 
+      {
+        let deg_id = $('#degree').val();
+        $.ajax(
+        {
+          type: "POST",
+          url: 'functions.php',
+          data: {'funName':'load_classes','deg_id':deg_id}, 
+          success: function(data)
+          {
+            $('#class').html(data);
+          }
+        });
+      });
 
       </script>
   </body>
