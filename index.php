@@ -193,7 +193,6 @@
       $('#submit_btn').on('click',function(e) 
       {
         // e.preventDefault();
-        alert('halo');
         $(".error").remove();
         var deg_id = $('#degree').val();
         var name = $('#name').val();
@@ -246,7 +245,6 @@
             
         if (cnic.length < 1) 
         {
-          alert(age);
           if(age<18) 
           {
             if(fcnic.length < 1)
@@ -300,7 +298,7 @@
             data: formData, 
             success: function(data)
             {
-              alert(data);
+              window.location.href = "index.php";
             }
           });
         }
