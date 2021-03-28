@@ -8,7 +8,34 @@ if (isset($_POST['funName']))
 		$deg_id = $_POST['deg_id'];
 		load_classes($deg_id);
 	}
+	else if($_POST['funName']== 'Save')
+	{
+
+		save();
+	}
 }
+
+	function save()
+	{
+		$pdo = connect();
+
+		$data =array(
+			'name' => $_POST['name'],
+			'fname' => $_POST['fname'],
+			'cnic' => $_POST['cnic'],
+			'fcnic' => $_POST['fcnic'],
+			'dob' => $_POST['dob'],
+			'mobNo' => $_POST['mobNo'],
+			'deg_id' => $_POST['deg_id'],
+			'class_id' => $_POST['class_id'],
+			'address' => $_POST['address'],
+			'status' => $_POST['status'],
+			'schlorship' => $_POST['scholorship'],
+		);
+		$sql = "INSERT INTO student (`name`, `fname`, `cnic`, `fcnic`, `dob`, `mobNo`, `deg_id`, `class_id`, `address`, `status`, `schlorship`) VALUES (:name,:fname,:cnic,:fcnic,:dob,:mobNo,:deg_id,:class_id,:address,:status,:schlorship)";
+		$pdo->prepare($sql)->execute($data);		
+	}
+
 	function load_degrees()
 	{
 		$pdo = connect();
