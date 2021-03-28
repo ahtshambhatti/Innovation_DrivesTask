@@ -178,6 +178,18 @@
       $( document ).ready(function() {
         $('#fcnic').prop("disabled",true);
         $('#classes').prop("disabled",true);
+        let age=0;
+        $( "#dob" ).on( "focusout", function( event ) 
+        {
+          var $this = $(this);
+          var input = $this.val();
+          dob = new Date(input);
+          var today = new Date();
+          age = Math.floor((today-dob) / (365.25 * 24 * 60 * 60 * 1000));
+          if (age < 18) {
+            $('#fcnic').prop("disabled",false);
+          }
+        });
       $('#submit_btn').on('click',function(e) 
       {
         // e.preventDefault();
@@ -234,15 +246,21 @@
             
         if (cnic.length < 1) 
         {
-        $('#cnic').after('<span class="error" style="color:red;">CNIC Must be Provided</span>');
-        error = 1;
+          alert(age);
+          if(age<18) 
+          {
+            if(fcnic.length < 1)
+              if (cnic.length<1) 
+              {
+                $('#fcnic').after('<span class="error" style="color:red;">CNIC Must be Provided</span>');
+                error = 1;  
+              }
+          }
+          else if (age>18){
+          $('#cnic').after('<span class="error" style="color:red;">CNIC Must be Provided</span>');
+          error = 1;
+        }
         }     
-      // alert(fcnic.disable);
-      // if (!(fcnic.disable)) 
-      // {
-      //   $('#fcnic').after('<span class="error" style="color:red;">CNIC Must be Provided</span>');
-      //   error = 1;
-      // }
         if (address.length < 1) 
         {
         $('#address').after('<span class="error" style="color:red;">Address Must be Provided</span>');
@@ -258,16 +276,16 @@
         $('#schErr').html('<span class="error" style="color:red;">Must Accepted</span>');
         error=1;
         } 
-
-        // if(error == 0)
+        if(error == 0)
         {
-          // e.preventDefault();
+          e.preventDefault();
           var formData = {
             'funName':'Save',
-            'degree'        : deg_id,
+            'deg_id'        : deg_id,
             'name'       : name,
             'mobNo'       : mobNo,
-            'class'  : class_id,
+            'dob'       : dob,
+            'class_id'  : class_id,
             'fname':fname,
             'cnic':cnic,
             'fcnic':fcnic,
@@ -289,18 +307,7 @@
       });
   });
 
-      $( "#dob" ).on( "focusout", function( event ) 
-      {
-        var $this = $(this);
-        var input = $this.val();
-        dob = new Date(input);
-        var today = new Date();
-        var age=0;
-        age = Math.floor((today-dob) / (365.25 * 24 * 60 * 60 * 1000));
-        if (age < 18) {
-          $('#fcnic').prop("disabled",false);
-        }
-      });
+
       $( "#mobNo" ).on( "keyup", function( event ) 
       {
         var $this = $(this);
