@@ -1,3 +1,8 @@
+<?php
+  require_once 'functions.php';
+  $degree =load_degrees();
+?>
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -19,7 +24,7 @@
     
     <!-- Container -->
     <section class="container mt-5">
-      <form action="save.php" method="post">
+      <form action="functions.php/save" method="post">
         <section class="row">
           <!-- LEFT Side -->
           <div class="col-6">
@@ -29,12 +34,12 @@
               <div class="col-8">
                 <select class="degree form-control" id="degree" name="degree">
                   <option>Select Degree</option>
-                  <!-- <?php 
+                  <?php 
                     foreach ($degree as $val) 
                     {
-                      echo "<option value='$val->id'>".$val->name."</option>";
+                      echo "<option value='".$val['id']."'>".$val['name']."</option>";
                     }
-                   ?> -->
+                   ?>
                 </select>
               </div>
             </div>
@@ -208,10 +213,23 @@
 
         $this.val(function() 
         {
-          return chunk.join(" ").toUpperCase();
+          return chunk.join("").toUpperCase();
         });
       } );
-
+    $('#degree').on('change',function(e) 
+    {
+      let deg_id = $('#degree').val();
+      $.ajax(
+      {
+        type: "POST",
+        url: 'functions.php',
+        data: {'funName':'load_classes','deg_id':deg_id}, 
+        success: function(data)
+        {
+          $('#class').html(data);
+        }
+      });
+    });
       </script>
   </body>
 </html>
